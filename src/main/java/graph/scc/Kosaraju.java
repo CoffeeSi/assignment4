@@ -10,11 +10,13 @@ import java.util.Set;
 
 import graph.graph.Edge;
 import graph.graph.Graph;
+import metrics.Metrics;
 
 public class Kosaraju {
-    public List<List<Integer>> kosaraju(Graph graph) {
+    public List<List<Integer>> kosaraju(Graph graph, Metrics m) {
         if (graph == null) throw new IllegalArgumentException("graph must not be null");
-        
+
+        if (m != null) m.startTimer("kosaraju");
         List<List<Integer>> adj = new ArrayList<>(graph.getN());
         List<List<Integer>> rev = new ArrayList<>(graph.getN());
 
@@ -32,7 +34,7 @@ public class Kosaraju {
         Deque<Integer> order = new ArrayDeque<>();
         for (int i = 0; i < graph.getN(); i++) {
             if (!visited[i])
-                dfs1(i, adj, visited, order);
+                dfs1(i, adj, visited, order, m);
         }
         visited = new boolean[graph.getN()];
         List<List<Integer>> components = new ArrayList<>();
@@ -41,29 +43,35 @@ public class Kosaraju {
             int v = order.removeLast();
             if (!visited[v]) {
                 List<Integer> component = new ArrayList<>();
-                dfs2(v, rev, visited, component);
+                dfs2(v, rev, visited, component, m);
                 Collections.sort(component);
                 components.add(component);
             }
         }
+
+        if (m != null) m.stopTimer("kosaraju");
         return components;
     }
 
-    private void dfs1(int v, List<List<Integer>> adj, boolean[] visited, Deque<Integer> order) {
+    private void dfs1(int v, List<List<Integer>> adj, boolean[] visited, Deque<Integer> order, Metrics m) {
         visited[v] = true;
+        if (m != null) m.addVisits();
         for (int to : adj.get(v)) {
+            if (m != null) m.addEdges();
             if (!visited[to])
-                dfs1(to, adj, visited, order);
+                dfs1(to, adj, visited, order, m);
         }
         order.addLast(v);
     }
 
-    private void dfs2(int v, List<List<Integer>> rev, boolean[] visited, List<Integer> component) {
+    private void dfs2(int v, List<List<Integer>> rev, boolean[] visited, List<Integer> component, Metrics m) {
         visited[v] = true;
         component.add(v);
+        if (m != null) m.addVisits();
         for (int to : rev.get(v)) {
+            if (m != null) m.addEdges();
             if (!visited[to])
-                dfs2(to, rev, visited, component);
+                dfs2(to, rev, visited, component, m);
         }
     }
 

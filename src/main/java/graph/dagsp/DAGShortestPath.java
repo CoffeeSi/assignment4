@@ -6,12 +6,14 @@ import java.util.List;
 
 import graph.graph.Edge;
 import graph.graph.Graph;
+import metrics.Metrics;
 
 public class DAGShortestPath {
-    public void shortestPath(Graph graph, List<Integer> topo) {
+    public void shortestPath(Graph graph, List<Integer> topo, Metrics m) {
         if (graph == null) throw new IllegalArgumentException("graph must not be null");
         if (topo == null) throw new IllegalArgumentException("topo order must not be null");
 
+        if (m != null) m.startTimer("dagShortestPath");
         int n = graph.getN();
         int source = graph.getSource();
 
@@ -30,6 +32,7 @@ public class DAGShortestPath {
             if (dist[u] == Long.MAX_VALUE) continue;
             for (Edge edge : adj.get(u)) {
                 int v = edge.getV();
+                if (m != null) m.addRelaxations();
                 long nd = dist[u] + edge.getW();
                 if (nd < dist[v]) {
                     dist[v] = nd;
@@ -53,12 +56,14 @@ public class DAGShortestPath {
                 System.out.println("  Path to " + i + ": " + reconstructPath(prev, i));
             }
         }
+        if (m != null) m.stopTimer("dagShortestPath");
     }
 
-    public void longestPath(Graph graph, List<Integer> topo) {
+    public void longestPath(Graph graph, List<Integer> topo, Metrics m) {
         if (graph == null) throw new IllegalArgumentException("graph must not be null");
         if (topo == null) throw new IllegalArgumentException("topo order must not be null");
-        
+
+        if (m != null) m.startTimer("dagLongestPath");
         int n = graph.getN();
         int source = graph.getSource();
 
@@ -76,6 +81,7 @@ public class DAGShortestPath {
             if (dist[u] == Long.MIN_VALUE) continue;
             for (Edge edge : adj.get(u)) {
                 int v = edge.getV();
+                if (m != null) m.addRelaxations();;
                 long nd = dist[u] + edge.getW();
                 if (nd > dist[v]) {
                     dist[v] = nd;
@@ -105,6 +111,7 @@ public class DAGShortestPath {
         List<Integer> criticalPath = reconstructPath(prev, bestV);
         System.out.println("Critical path length: " + best);
         System.out.println("Critical path vertices: " + criticalPath);
+        if (m != null) m.stopTimer("dagLongestPath");
     }
 
     private List<List<Edge>> buildAdj(Graph graph) {

@@ -8,9 +8,10 @@ import java.util.Queue;
 
 import graph.graph.Edge;
 import graph.graph.Graph;
+import metrics.Metrics;
 
 public class Kahn {
-    public List<Integer> kahn(Graph graph) {
+    public List<Integer> kahn(Graph graph, Metrics m) {
         int n = graph.getN();
 
         List<List<Integer>> adj = new ArrayList<>();
@@ -42,18 +43,21 @@ public class Kahn {
         for (int i = 0; i < n; i++) {
             if (indegree[i] == 0) {
                 q.add(i);
+                if (m != null) m.addPushes();
             }
         }
 
         List<Integer> valOrder = new ArrayList<>();
         while (!q.isEmpty()) {
             int node = q.poll();
+            if (m != null) m.addPops();
             valOrder.add(node);
 
             for (int v : adj.get(node)) {
                 indegree[v]--;
                 if (indegree[v] == 0) {
                     q.add(v);
+                    if (m != null) m.addPushes();
                 }
             }
         }
@@ -61,8 +65,10 @@ public class Kahn {
         return valOrder;
     }
 
-    public void printTopo(Graph graph, List<List<Integer>> sccs) {
-        List<Integer> valOrder = kahn(graph);
+    public void printTopo(Graph graph, List<List<Integer>> sccs, Metrics m) {
+        m.startTimer("kahn");
+        List<Integer> valOrder = kahn(graph, m);
+        m.stopTimer("kahn");
 
         List<Integer> derivOrder = new ArrayList<>();
         for (int comp : valOrder) {
