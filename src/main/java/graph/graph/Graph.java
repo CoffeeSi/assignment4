@@ -36,6 +36,6 @@ public class Graph {
                 "\nn: " + n +
                 "\nedges" + edges +
                 "\nsource: " + source +
-                "\nweight_model" + weight_model;
+                "\nweight_model: " + weight_model;
     }
 }
