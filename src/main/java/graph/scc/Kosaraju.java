@@ -70,7 +70,7 @@ public class Kosaraju {
     public Graph buildCondensation(Graph g, List<List<Integer>> sccs) {
         if (g == null) throw new IllegalArgumentException("graph must not be null");
         if (sccs == null) throw new IllegalArgumentException("sccs must not be null");
-        
+
         int n = g.getN();
         int k = sccs.size();
 
@@ -99,5 +99,13 @@ public class Kosaraju {
 
         int sourceComp = comp[g.getSource()];
         return new Graph(true, k, edges, sourceComp, "condensation");
+    }
+
+    public void printSCC(List<List<Integer>> sccList) {
+        System.out.println("Strongly connected components:");
+        for (int i = 0; i < sccList.size(); i++) {
+            List<Integer> component = new ArrayList<>(sccList.get(i));
+            System.out.println(i+1 + ": " + component + " size: " + component.size());
+        }
     }
 }
