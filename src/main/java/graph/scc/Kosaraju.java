@@ -105,7 +105,8 @@ public class Kosaraju {
         System.out.println("Strongly connected components:");
         for (int i = 0; i < sccList.size(); i++) {
             List<Integer> component = new ArrayList<>(sccList.get(i));
-            System.out.println(i+1 + ": " + component + " size: " + component.size());
+            System.out.println(i + ": " + component + " size: " + component.size());
         }
+        System.out.println();
     }
 }
