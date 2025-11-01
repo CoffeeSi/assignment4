@@ -57,10 +57,6 @@ public class Kahn {
                 }
             }
         }
-
-        boolean isDag = (valOrder.size() == n);
-        System.out.println("DAG: " + isDag);
-        System.out.println("Topological order: " + valOrder);
         
         return valOrder;
     }
@@ -74,7 +70,10 @@ public class Kahn {
             Collections.sort(scc);
             derivOrder.addAll(scc);
         }
+        boolean isDag = (valOrder.size() == graph.getN());
 
+        System.out.println("DAG: " + isDag);
+        System.out.println("Topological order: " + valOrder);
         System.out.println("Derived order: " + derivOrder);
     }
 }
