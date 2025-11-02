@@ -27,7 +27,7 @@ public class Metrics implements MetricsInterface {
 
         try (FileWriter writer = new FileWriter(this.filename, true)) {
             if (writeHeader)
-                writer.write("algorithm,visits,edges,pushes,pops,relaxations\n");
+                writer.write("algorithm,visits,edges,pushes,pops,relaxations,timeMs\n");
         } catch (IOException e) {
             throw new RuntimeException("Failed to initialize CSV file", e);
         }

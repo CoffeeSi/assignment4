@@ -58,7 +58,6 @@ public class DAGShortestPathTest {
 
     @Test
     public void testSimpleDAG_withNegativeWeights() {
-        // DAG: 0 -> 1 (-5), 1 -> 2 (3)
         List<Edge> edges = new ArrayList<>();
         edges.add(new Edge(0, 1, -5));
         edges.add(new Edge(1, 2, 3));
@@ -92,7 +91,6 @@ public class DAGShortestPathTest {
         dsp.shortestPath(cond, topo, null);
         dsp.longestPath(cond, topo, null);
 
-        // No edges — should not crash
         assertEquals(1, cond.getN());
         assertEquals(1, topo.size());
     }

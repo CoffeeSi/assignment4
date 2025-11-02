@@ -64,7 +64,7 @@ public class KosarajuKahnTest {
         Kosaraju scc = new Kosaraju();
         List<List<Integer>> comps = scc.kosaraju(g, null);
 
-        assertEquals(4, comps.size()); // each vertex its own SCC
+        assertEquals(4, comps.size());
 
         Graph cond = scc.buildCondensation(g, comps);
         assertEquals(4, cond.getN());
